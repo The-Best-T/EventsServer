@@ -1,4 +1,6 @@
-﻿namespace Server.Extensions
+﻿using NLog;
+
+namespace Server.Extensions
 {
     public static class ServiceExtensions
     {
@@ -19,6 +21,9 @@
             {
             });
         }
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            services.AddScoped<ILoggerManager, LoggerManager>();
+        }
     }
-
 }
