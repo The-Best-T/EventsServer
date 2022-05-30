@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using Entities;
+using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Server.Extensions
 {
@@ -24,6 +26,12 @@ namespace Server.Extensions
         public static void ConfigureLoggerService(this IServiceCollection services)
         {
             services.AddScoped<ILoggerManager, LoggerManager>();
+        }
+        public static void ConfigureSqlContext(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddDbContext<RepositoryContext>(opts =>
+            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
         }
     }
 }
