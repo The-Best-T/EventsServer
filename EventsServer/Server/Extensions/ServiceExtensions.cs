@@ -1,6 +1,8 @@
-﻿using Entities;
+﻿using Contracts;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using Repository;
 
 namespace Server.Extensions
 {
@@ -12,8 +14,8 @@ namespace Server.Extensions
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
             });
 
         }
@@ -34,5 +36,10 @@ namespace Server.Extensions
                 opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b =>
                     b.MigrationsAssembly("Server")));
         }
+        public static void ConfigureRepositoryManager(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+        }
+
     }
 }
