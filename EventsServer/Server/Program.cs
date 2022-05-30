@@ -2,15 +2,16 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Server.Extensions;
 var builder = WebApplication.CreateBuilder(args);
-
+var services = builder.Services;
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 // Add services to the container.
-builder.Services.ConfigureCors();
-builder.Services.ConfigureLoggerService();
-builder.Services.ConfigureIISIntegration();
-builder.Services.ConfigureRepositoryManager();
-builder.Services.ConfigureSqlContext(builder.Configuration);
+services.ConfigureCors();
+services.ConfigureLoggerService();
+services.ConfigureIISIntegration();
+services.ConfigureRepositoryManager();
+services.AddAutoMapper(typeof(Program));
+services.ConfigureSqlContext(builder.Configuration);
 
 builder.Services.AddControllers();
 
