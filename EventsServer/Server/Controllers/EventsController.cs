@@ -30,7 +30,7 @@ namespace Server.Controllers
             return Ok(eventsDto);
         }
 
-        [HttpGet("{id}",Name = "GetEventById")]
+        [HttpGet("{id}", Name = "GetEventById")]
         public ActionResult GetEventById(Guid id)
         {
             var singleEvent = _repository.Event.GetEventById(id);
@@ -66,7 +66,7 @@ namespace Server.Controllers
         public ActionResult DeleteEventById(Guid id)
         {
             var deletedEvent = _repository.Event.GetEventById(id);
-            if (deletedEvent==null)
+            if (deletedEvent == null)
             {
                 _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
                 return NotFound();
@@ -78,7 +78,29 @@ namespace Server.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}")]
+        public ActionResult UpdateEventById(Guid id,
+            [FromBody] EventForUpdateDto eventForUpdateDto)
+        {
+            if (eventForUpdateDto == null)
+            {
+                _logger.LogError("EventForUpdateDto object sent from client is null.");
+                return BadRequest("EventForUpdateDto object is null");
+            }
 
+            var updateEvent = _repository.Event.GetEventById(id, true);
+            if (updateEvent == null)
+            {
+                _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _mapper.Map(eventForUpdateDto,updateEvent);
+            _repository.Save();
+
+            return NoContent();
+
+        }
 
     }
 }

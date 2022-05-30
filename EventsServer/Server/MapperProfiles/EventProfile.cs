@@ -10,6 +10,7 @@ namespace Server.MapperProfiles
         {
             CreateMap<Event, EventDto>();
             CreateMap<EventForCreationDto, Event>();
+            CreateMap<EventForUpdateDto, Event>();
         }
     }
 }
