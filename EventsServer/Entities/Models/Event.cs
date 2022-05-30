@@ -25,6 +25,6 @@ namespace Entities.Models
         public string Place { get; set; }
 
         [Required(ErrorMessage = "Date is a required field.")]
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
     }
 }
