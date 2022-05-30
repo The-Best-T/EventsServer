@@ -8,6 +8,30 @@ namespace Repository
     {
         public EventRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
+
         }
+
+        public void CreateEvent(Event newEvent)
+        {
+            Create(newEvent);
+        }
+
+        public void DeleteEvent(Event oldEvent)
+        {
+            Delete(oldEvent);
+        }
+
+        public IEnumerable<Event> GetAllEvents(bool trackChanges)
+        {
+            return FindAll(trackChanges)
+                .OrderBy(e => e.Date)
+                .ToList();
+        }
+
+        public Event? GetEventById(Guid id, bool trackChanges)
+        {
+            return FindByCondition(e => e.Id.Equals(id), trackChanges).SingleOrDefault();
+        }
+
     }
 }
