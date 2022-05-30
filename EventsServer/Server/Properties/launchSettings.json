@@ -5,7 +5,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:8000",
-      "sslPort": 44381
+      "sslPort": 40000
     }
   },
   "profiles": {
@@ -21,8 +21,8 @@
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,
-      "launchUrl": "modnes",
+      "launchBrowser": true,
+      "launchUrl": "modsen",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
