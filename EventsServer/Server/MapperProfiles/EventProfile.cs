@@ -9,6 +9,7 @@ namespace Server.MapperProfiles
         public EventProfile()
         {
             CreateMap<Event, EventDto>();
+            CreateMap<EventForCreationDto, Event>();
         }
     }
 }
