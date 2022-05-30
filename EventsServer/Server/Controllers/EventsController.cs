@@ -24,19 +24,10 @@ namespace Server.Controllers
         [HttpGet]
         public ActionResult GetAllEvents()
         {
-            try
-            {
-                var events = _repository.Event.GetAllEvents(trackChanges: false);
-                var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
-                return Ok(eventsDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(GetAllEvents)} action {ex}");
-                return StatusCode(500, "Internal server error");
-            }
+            var events = _repository.Event.GetAllEvents(trackChanges: false);
+            var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
+            return Ok(eventsDto);
         }
-
 
     }
 }

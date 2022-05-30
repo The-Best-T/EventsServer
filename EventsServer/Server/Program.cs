@@ -27,7 +27,7 @@ else
     app.UseHsts();
 }
 
-app.ConfigureExceptionHandler(app.Services.GetService<ILoggerManager>());
+app.ConfigureExceptionHandler(new LoggerManager());
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
