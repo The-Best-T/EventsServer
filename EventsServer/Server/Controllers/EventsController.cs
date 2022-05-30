@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects.Event;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Controllers
