@@ -13,7 +13,11 @@ services.ConfigureRepositoryManager();
 services.AddAutoMapper(typeof(Program));
 services.ConfigureSqlContext(builder.Configuration);
 
-builder.Services.AddControllers();
+services.AddControllers(config =>
+{
+    config.RespectBrowserAcceptHeader = true;
+    config.ReturnHttpNotAcceptable = true;
+}).AddXmlDataContractSerializerFormatters();
 
 var app = builder.Build();
 

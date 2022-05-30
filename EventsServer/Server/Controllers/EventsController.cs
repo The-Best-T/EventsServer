@@ -24,9 +24,22 @@ namespace Server.Controllers
         [HttpGet]
         public ActionResult GetAllEvents()
         {
-            var events = _repository.Event.GetAllEvents(trackChanges: false);
+            var events = _repository.Event.GetAllEvents();
             var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
             return Ok(eventsDto);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult GetEventById(Guid id)
+        {
+            var singleEvent = _repository.Event.GetEventById(id);
+            if (singleEvent == null)
+            {
+                _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            var eventDto = _mapper.Map<EventDto>(singleEvent);
+            return Ok(eventDto);
         }
 
     }
