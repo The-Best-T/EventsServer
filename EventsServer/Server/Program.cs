@@ -1,34 +1,40 @@
+using Microsoft.AspNetCore.HttpOverrides;
+using Server.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.ConfigureCors();
+builder.Services.ConfigureIISIntegration();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+if (builder.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-var summaries = new[]
+app.UseCors("CorsPolicy");
+app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    ForwardedHeaders = ForwardedHeaders.All
+});
 
-app.MapGet("/weatherforecast", () =>
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-       new WeatherForecast
-       (
-           DateTime.Now.AddDays(index),
-           Random.Shared.Next(-20, 55),
-           summaries[Random.Shared.Next(summaries.Length)]
-       ))
-        .ToArray();
-    return forecast;
+    endpoints.MapControllers();
 });
 
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
