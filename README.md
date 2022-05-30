@@ -1,1 +1,1 @@
-# EventsServer
+# EventsServer test project in Modnes
