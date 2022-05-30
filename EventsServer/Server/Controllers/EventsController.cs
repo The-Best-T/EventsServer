@@ -62,5 +62,23 @@ namespace Server.Controllers
             return CreatedAtRoute("GetEventById", new { id = eventToReturn.Id }, eventToReturn);
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult DeleteEventById(Guid id)
+        {
+            var deletedEvent = _repository.Event.GetEventById(id);
+            if (deletedEvent==null)
+            {
+                _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _repository.Event.DeleteEvent(deletedEvent);
+            _repository.Save();
+
+            return NoContent();
+        }
+
+
+
     }
 }
