@@ -17,9 +17,12 @@ services.ConfigureRateLimitingOptions();
 services.ConfigureApi();
 services.ConfigureVersioning();
 
+services.AddAuthentication();
+services.ConfigureIdentity();
+services.ConfigureRepositoryManager();
+
 services.ConfigureFilters();
 services.ConfigureLoggerService();
-services.ConfigureRepositoryManager();
 services.AddAutoMapper(typeof(Program));
 services.ConfigureSqlContext(builder.Configuration);
 
@@ -54,6 +57,9 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseIpRateLimiting();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAuthorization();
 
