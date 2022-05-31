@@ -3,6 +3,7 @@ using Entities;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extensions;
 
 namespace Repository
 {
@@ -26,12 +27,14 @@ namespace Repository
         public async Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters,
             bool trackChanges = false)
         {
-            var events = await FindByCondition(e => e.Date >= eventParameters.MinDate &&
-            e.Date <= eventParameters.MaxDate, trackChanges)
+            var events = await FindAll(trackChanges)
+                .FilterEvents(eventParameters.MinDate, eventParameters.MaxDate)
+                .Search(eventParameters.SearchName)
                 .OrderBy(e => e.Date)
                 .Skip((eventParameters.PageNumber - 1) * eventParameters.PageSize)
                 .Take(eventParameters.PageSize)
                 .ToListAsync();
+
             var count = await FindAll(false).CountAsync();
 
             return PagedList<Event>
