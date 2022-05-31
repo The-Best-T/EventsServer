@@ -21,17 +21,17 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAllEvents()
+        public async Task<IActionResult> GetAllEvents()
         {
-            var events = _repository.Event.GetAllEvents();
+            var events = await _repository.Event.GetAllEventsAsync();
             var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
             return Ok(eventsDto);
         }
 
         [HttpGet("{id}", Name = "GetEventById")]
-        public ActionResult GetEventById(Guid id)
+        public async Task<IActionResult> GetEventById(Guid id)
         {
-            var singleEvent = _repository.Event.GetEventById(id);
+            var singleEvent = await _repository.Event.GetEventByIdAsync(id);
             if (singleEvent == null)
             {
                 _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
@@ -42,7 +42,7 @@ namespace Server.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateEvent([FromBody] EventForCreationDto eventForCreationDto)
+        public async Task<IActionResult> CreateEventAsync([FromBody] EventForCreationDto eventForCreationDto)
         {
             if (eventForCreationDto == null)
             {
@@ -59,7 +59,7 @@ namespace Server.Controllers
             var eventEntity = _mapper.Map<Event>(eventForCreationDto);
 
             _repository.Event.CreateEvent(eventEntity);
-            _repository.Save();
+            await _repository.SaveAsync();
 
             var eventToReturn = _mapper.Map<EventDto>(eventEntity);
 
@@ -67,9 +67,9 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteEventById(Guid id)
+        public async Task<IActionResult> DeleteEventByIdAsync(Guid id)
         {
-            var deletedEvent = _repository.Event.GetEventById(id);
+            var deletedEvent = await _repository.Event.GetEventByIdAsync(id);
             if (deletedEvent == null)
             {
                 _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
@@ -77,13 +77,13 @@ namespace Server.Controllers
             }
 
             _repository.Event.DeleteEvent(deletedEvent);
-            _repository.Save();
+            await _repository.SaveAsync();
 
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateEventById(Guid id,
+        public async Task<IActionResult> UpdateEventByIdAsync(Guid id,
             [FromBody] EventForUpdateDto eventForUpdateDto)
         {
             if (eventForUpdateDto == null)
@@ -98,7 +98,7 @@ namespace Server.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var updateEvent = _repository.Event.GetEventById(id, true);
+            var updateEvent = await _repository.Event.GetEventByIdAsync(id, true);
             if (updateEvent == null)
             {
                 _logger.LogInfo($"Event with id: {id} doesn't exist in the database.");
@@ -106,7 +106,7 @@ namespace Server.Controllers
             }
 
             _mapper.Map(eventForUpdateDto, updateEvent);
-            _repository.Save();
+            await _repository.SaveAsync();
 
             return NoContent();
 

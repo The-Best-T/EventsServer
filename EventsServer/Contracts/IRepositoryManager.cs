@@ -3,6 +3,6 @@
     public interface IRepositoryManager
     {
         IEventRepository Event { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

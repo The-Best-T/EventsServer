@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -21,16 +22,17 @@ namespace Repository
             Delete(oldEvent);
         }
 
-        public IEnumerable<Event> GetAllEvents(bool trackChanges = false)
+        public async Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges = false)
         {
-            return FindAll(trackChanges)
+            return await FindAll(trackChanges)
                 .OrderBy(e => e.Date)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Event? GetEventById(Guid id, bool trackChanges = false)
+        public async Task<Event?> GetEventByIdAsync(Guid id, bool trackChanges = false)
         {
-            return FindByCondition(e => e.Id.Equals(id), trackChanges).SingleOrDefault();
+            return await FindByCondition(e => e.Id.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
         }
 
     }
