@@ -3,24 +3,24 @@ using Contracts;
 using Entities.DataTransferObjects.Event;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Server.ActionFilters;
 
 namespace Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("modsen/events")]
     public class EventsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        public EventsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public EventsController(IRepositoryManager repository, IMapper mapper)
         {
             _repository = repository;
-            _logger = logger;
             _mapper = mapper;
         }
 
@@ -58,6 +58,7 @@ namespace Server.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateEventAsync([FromBody] EventForCreationDto eventForCreationDto)
         {
@@ -72,6 +73,7 @@ namespace Server.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidateEventExistsAttribute))]
         public async Task<IActionResult> DeleteEventByIdAsync(Guid id)
         {
@@ -84,6 +86,7 @@ namespace Server.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEventExistsAttribute))]
         public async Task<IActionResult> UpdateEventByIdAsync(Guid id,
