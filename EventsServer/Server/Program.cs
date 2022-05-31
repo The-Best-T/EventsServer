@@ -9,6 +9,7 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nl
 services.ConfigureApi();
 services.ConfigureCors();
 services.ConfigureFilters();
+services.ConfigureVersioning();
 services.ConfigureLoggerService();
 services.ConfigureIISIntegration();
 services.ConfigureRepositoryManager();

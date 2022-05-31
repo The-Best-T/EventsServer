@@ -9,8 +9,9 @@ using Server.ActionFilters;
 
 namespace Server.Controllers
 {
-    [Route("modsen/events")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("modsen/events")]
     public class EventsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -23,7 +24,15 @@ namespace Server.Controllers
             _mapper = mapper;
         }
 
+        [HttpOptions]
+        public IActionResult GetEventsOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            return Ok();
+        }
+
         [HttpGet]
+        [HttpHead]
         public async Task<IActionResult> GetAllEvents([FromQuery] EventParameters eventParameters)
         {
             if (!eventParameters.ValidDateRange)
