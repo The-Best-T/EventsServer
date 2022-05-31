@@ -21,14 +21,14 @@ namespace Repository
             Delete(oldEvent);
         }
 
-        public IEnumerable<Event> GetAllEvents(bool trackChanges)
+        public IEnumerable<Event> GetAllEvents(bool trackChanges = false)
         {
             return FindAll(trackChanges)
                 .OrderBy(e => e.Date)
                 .ToList();
         }
 
-        public Event? GetEventById(Guid id, bool trackChanges)
+        public Event? GetEventById(Guid id, bool trackChanges = false)
         {
             return FindByCondition(e => e.Id.Equals(id), trackChanges).SingleOrDefault();
         }
