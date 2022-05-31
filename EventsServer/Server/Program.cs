@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Server.Extensions;
@@ -6,12 +7,18 @@ var services = builder.Services;
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 // Add services to the container.
-services.ConfigureApi();
 services.ConfigureCors();
-services.ConfigureFilters();
-services.ConfigureVersioning();
-services.ConfigureLoggerService();
 services.ConfigureIISIntegration();
+
+services.AddMemoryCache();
+services.AddHttpContextAccessor();
+services.ConfigureRateLimitingOptions();
+
+services.ConfigureApi();
+services.ConfigureVersioning();
+
+services.ConfigureFilters();
+services.ConfigureLoggerService();
 services.ConfigureRepositoryManager();
 services.AddAutoMapper(typeof(Program));
 services.ConfigureSqlContext(builder.Configuration);
@@ -43,6 +50,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
+
+app.UseIpRateLimiting();
 
 app.UseRouting();
 
