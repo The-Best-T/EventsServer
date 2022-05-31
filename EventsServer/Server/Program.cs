@@ -20,6 +20,7 @@ services.ConfigureVersioning();
 services.AddAuthentication();
 services.ConfigureIdentity();
 services.ConfigureRepositoryManager();
+services.ConfigureJWT(builder.Configuration);
 
 services.ConfigureFilters();
 services.ConfigureLoggerService();

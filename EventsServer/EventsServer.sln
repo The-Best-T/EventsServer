@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{E914373C-DA77-4D15-84C4-DC0C5C384424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{66D3A784-E762-4566-A6BB-453E26842CB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{66D3A784-E762-4566-A6BB-453E26842CB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService", "AuthenticationManager\AuthenticationService.csproj", "{BD09B40C-AE38-4AFC-BF5E-C6FAFE2E2341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{66D3A784-E762-4566-A6BB-453E26842CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D3A784-E762-4566-A6BB-453E26842CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D3A784-E762-4566-A6BB-453E26842CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD09B40C-AE38-4AFC-BF5E-C6FAFE2E2341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD09B40C-AE38-4AFC-BF5E-C6FAFE2E2341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD09B40C-AE38-4AFC-BF5E-C6FAFE2E2341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD09B40C-AE38-4AFC-BF5E-C6FAFE2E2341}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
