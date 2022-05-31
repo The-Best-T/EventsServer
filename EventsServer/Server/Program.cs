@@ -8,6 +8,7 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nl
 // Add services to the container.
 services.ConfigureApi();
 services.ConfigureCors();
+services.ConfigureFilters();
 services.ConfigureLoggerService();
 services.ConfigureIISIntegration();
 services.ConfigureRepositoryManager();
@@ -16,8 +17,8 @@ services.ConfigureSqlContext(builder.Configuration);
 
 services.AddControllers(config =>
 {
-    config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
+    config.RespectBrowserAcceptHeader = true;
 }).AddXmlDataContractSerializerFormatters();
 
 var app = builder.Build();

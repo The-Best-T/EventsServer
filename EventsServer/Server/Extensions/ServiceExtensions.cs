@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repository;
+using Server.ActionFilters;
 
 namespace Server.Extensions
 {
@@ -48,6 +49,11 @@ namespace Server.Extensions
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+        }
+
+        public static void ConfigureFilters(this IServiceCollection services)
+        {
+            services.AddScoped<ValidationFilterAttribute>();
         }
     }
 }

@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DataTransferObjects.Event;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Server.ActionFilters;
 
 namespace Server.Controllers
 {
@@ -42,20 +43,9 @@ namespace Server.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateEventAsync([FromBody] EventForCreationDto eventForCreationDto)
         {
-            if (eventForCreationDto == null)
-            {
-                _logger.LogError("EventForCreationDto object sent from client is null.");
-                return BadRequest("EventForCreationDto object is null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the EventForCreationDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var eventEntity = _mapper.Map<Event>(eventForCreationDto);
 
             _repository.Event.CreateEvent(eventEntity);
@@ -83,21 +73,10 @@ namespace Server.Controllers
         }
 
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateEventByIdAsync(Guid id,
             [FromBody] EventForUpdateDto eventForUpdateDto)
         {
-            if (eventForUpdateDto == null)
-            {
-                _logger.LogError("EventForUpdateDto object sent from client is null.");
-                return BadRequest("EventForUpdateDto object is null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the EventForUpdateDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var updateEvent = await _repository.Event.GetEventByIdAsync(id, true);
             if (updateEvent == null)
             {
