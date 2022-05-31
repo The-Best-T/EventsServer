@@ -2,7 +2,9 @@
 using Contracts;
 using Entities.DataTransferObjects.Event;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Server.ActionFilters;
 
 namespace Server.Controllers
@@ -22,9 +24,10 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEvents()
+        public async Task<IActionResult> GetAllEvents([FromQuery] EventParameters eventsParameters)
         {
-            var events = await _repository.Event.GetAllEventsAsync();
+            var events = await _repository.Event.GetAllEventsAsync(eventsParameters);
+            Response.Headers.Add("X-Pagination",JsonConvert.SerializeObject(events.MetaData));
             var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
             return Ok(eventsDto);
         }

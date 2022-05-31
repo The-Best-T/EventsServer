@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository
@@ -22,11 +23,18 @@ namespace Repository
             Delete(oldEvent);
         }
 
-        public async Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges = false)
+        public async Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters,
+            bool trackChanges = false)
         {
-            return await FindAll(trackChanges)
+            var events = await FindAll(trackChanges)
                 .OrderBy(e => e.Date)
+                .Skip((eventParameters.PageNumber - 1) * eventParameters.PageSize)
+                .Take(eventParameters.PageSize)
                 .ToListAsync();
+            var count = await FindAll(false).CountAsync();
+
+            return PagedList<Event>
+                .ToPagedList(events, eventParameters.PageNumber, eventParameters.PageSize, count);
         }
 
         public async Task<Event?> GetEventByIdAsync(Guid id, bool trackChanges = false)
