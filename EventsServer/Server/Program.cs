@@ -6,6 +6,7 @@ var services = builder.Services;
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 // Add services to the container.
+services.ConfigureApi();
 services.ConfigureCors();
 services.ConfigureLoggerService();
 services.ConfigureIISIntegration();

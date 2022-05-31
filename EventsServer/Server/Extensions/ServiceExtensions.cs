@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repository;
@@ -41,5 +42,12 @@ namespace Server.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
         }
 
+        public static void ConfigureApi(this IServiceCollection services)
+        {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+        }
     }
 }

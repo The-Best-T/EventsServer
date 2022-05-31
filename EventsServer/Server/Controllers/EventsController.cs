@@ -13,8 +13,6 @@ namespace Server.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-
-
         public EventsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
@@ -50,6 +48,12 @@ namespace Server.Controllers
             {
                 _logger.LogError("EventForCreationDto object sent from client is null.");
                 return BadRequest("EventForCreationDto object is null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the EventForCreationDto object");
+                return UnprocessableEntity(ModelState);
             }
 
             var eventEntity = _mapper.Map<Event>(eventForCreationDto);
@@ -88,6 +92,12 @@ namespace Server.Controllers
                 return BadRequest("EventForUpdateDto object is null");
             }
 
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the EventForUpdateDto object");
+                return UnprocessableEntity(ModelState);
+            }
+
             var updateEvent = _repository.Event.GetEventById(id, true);
             if (updateEvent == null)
             {
@@ -95,7 +105,7 @@ namespace Server.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(eventForUpdateDto,updateEvent);
+            _mapper.Map(eventForUpdateDto, updateEvent);
             _repository.Save();
 
             return NoContent();

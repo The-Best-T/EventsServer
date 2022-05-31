@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities.Models
+namespace Entities.DataTransferObjects.Event
 {
-    public class Event
+    public abstract class EventForManipulateDto
     {
-        [Column("EventId")]
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Name is a required field.")]
         [MaxLength(ErrorMessage = "Maximum length for Name is 50 characters.")]
         public string Name { get; set; }
