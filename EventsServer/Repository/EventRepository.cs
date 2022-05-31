@@ -26,7 +26,8 @@ namespace Repository
         public async Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters,
             bool trackChanges = false)
         {
-            var events = await FindAll(trackChanges)
+            var events = await FindByCondition(e => e.Date >= eventParameters.MinDate &&
+            e.Date <= eventParameters.MaxDate, trackChanges)
                 .OrderBy(e => e.Date)
                 .Skip((eventParameters.PageNumber - 1) * eventParameters.PageSize)
                 .Take(eventParameters.PageSize)
@@ -42,6 +43,5 @@ namespace Repository
             return await FindByCondition(e => e.Id.Equals(id), trackChanges)
                 .SingleOrDefaultAsync();
         }
-
     }
 }

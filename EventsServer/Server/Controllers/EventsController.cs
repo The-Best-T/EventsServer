@@ -24,11 +24,17 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEvents([FromQuery] EventParameters eventsParameters)
+        public async Task<IActionResult> GetAllEvents([FromQuery] EventParameters eventParameters)
         {
-            var events = await _repository.Event.GetAllEventsAsync(eventsParameters);
-            Response.Headers.Add("X-Pagination",JsonConvert.SerializeObject(events.MetaData));
+            if (!eventParameters.ValidDateRange)
+                return BadRequest("Max date can't be less than min date.");
+
+            var events = await _repository.Event.GetAllEventsAsync(eventParameters);
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(events.MetaData));
+
             var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
+
             return Ok(eventsDto);
         }
 
