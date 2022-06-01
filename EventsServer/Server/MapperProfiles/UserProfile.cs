@@ -8,7 +8,7 @@ namespace Server.MapperProfiles
     {
         public UserProfile()
         {
-            CreateMap<UserForRegistrationDto, User>();  
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }

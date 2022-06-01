@@ -1,5 +1,7 @@
 using AspNetCoreRateLimit;
+using Entities;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Server.Extensions;
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,7 @@ services.AddHttpContextAccessor();
 services.ConfigureRateLimitingOptions();
 
 services.ConfigureApi();
+services.ConfigureSwagger();
 services.ConfigureVersioning();
 
 services.AddAuthentication();
@@ -45,6 +48,12 @@ else
     app.UseHsts();
 }
 
+app.UseSwagger();
+app.UseSwaggerUI(s =>
+{
+    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Meetup API v1");
+});
+
 app.ConfigureExceptionHandler(new LoggerManager());
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -69,4 +78,18 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
+using (var scope = app.Services.CreateScope())
+{
+    var scopedServices = scope.ServiceProvider;
+    try
+    {
+        var db = scopedServices.GetRequiredService<RepositoryContext>();
+        await db.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = scopedServices.GetRequiredService<ILoggerManager>();
+        logger.LogError($"An error occurred while seeding the database: {ex}.");
+    }
+}
 app.Run();
