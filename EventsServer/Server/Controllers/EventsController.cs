@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Server.ActionFilters;
-using System.Security.Claims;
 
 namespace Server.Controllers
 {
@@ -49,7 +48,6 @@ namespace Server.Controllers
         /// <response code="200">Returns the list of all events</response>
         /// <response code="400">Request parameters are not valid</response>
         /// <response code="500">Server error</response>
-
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(200)]
@@ -68,21 +66,18 @@ namespace Server.Controllers
 
             return Ok(eventsDto);
         }
+
         /// <summary>
         /// Return one event by id
         /// </summary>
         /// <param name="id">Event id</param>
         /// <returns>Return one event</returns>
         /// <response code="200">Returns one event</response>
-        /// <response code="401">You are not authorized</response>
-        /// <response code="403">You have no rules</response>
         /// <response code="404">Event with this id not found</response>
         /// <response code="500">Server error</response>
         [HttpGet("{id}", Name = "GetEventById")]
         [ServiceFilter(typeof(ValidateEventExistsAttribute))]
         [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult GetEventById(Guid id)
@@ -92,6 +87,38 @@ namespace Server.Controllers
             var eventDto = _mapper.Map<EventDto>(singleEvent);
             return Ok(eventDto);
         }
+
+        /// <summary>
+        /// Return all events for current user
+        /// </summary>
+        /// <param name="eventParameters">Filter parameters</param>
+        /// <returns>The events list</returns>
+        /// <response code="200">Returns the list of all events</response>
+        /// <response code="400">Request parameters are not valid</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="500">Server error</response>
+        [HttpGet("my")]
+        [Authorize]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetEventsForCurrent([FromQuery] EventParameters eventParameters)
+        {
+            if (!eventParameters.ValidDateRange)
+                return BadRequest("Max date can't be less than min date.");
+
+            string userId = User.FindFirst(c => c.Type == "Id").Value;
+            var events = await _repository.Event.GetEventsForUserAsync(eventParameters, userId);
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(events.MetaData));
+
+            var eventsDto = _mapper.Map<IEnumerable<EventDto>>(events);
+
+            return Ok(eventsDto);
+        }
+
+
         /// <summary>
         /// Create one new event
         /// </summary>
@@ -189,7 +216,7 @@ namespace Server.Controllers
         {
             var updateEvent = HttpContext.Items["checkEvent"] as Event;
 
-            string userId = User.FindFirst(c=>c.Type=="Id").Value;
+            string userId = User.FindFirst(c => c.Type == "Id").Value;
             bool isUserAdmin = User.IsInRole("Admin");
 
             if (!updateEvent.CreaterId.Equals(userId) && !isUserAdmin)

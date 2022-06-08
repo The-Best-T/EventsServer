@@ -46,5 +46,21 @@ namespace Repository
             return await FindByCondition(e => e.Id.Equals(id), trackChanges)
                 .SingleOrDefaultAsync();
         }
+
+        public async Task<PagedList<Event>> GetEventsForUserAsync(EventParameters eventParameters, string userId, bool trackChanges = false)
+        {
+            var events = await FindByCondition(e => e.CreaterId.Equals(userId), trackChanges)
+                    .FilterEvents(eventParameters.MinDate, eventParameters.MaxDate)
+                    .Search(eventParameters.SearchName)
+                    .OrderBy(e => e.Date)
+                    .Skip((eventParameters.PageNumber - 1) * eventParameters.PageSize)
+                    .Take(eventParameters.PageSize)
+                    .ToListAsync();
+
+            var count = await FindByCondition(e => e.CreaterId.Equals(userId), trackChanges).CountAsync();
+
+            return PagedList<Event>
+                .ToPagedList(events, eventParameters.PageNumber, eventParameters.PageSize, count);
+        }
     }
 }

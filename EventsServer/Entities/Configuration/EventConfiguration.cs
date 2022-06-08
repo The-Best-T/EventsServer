@@ -17,7 +17,7 @@ namespace Entities.Configuration
                     Speaker = "Holy Father Peter",
                     Place = "North Church",
                     Date = new DateTime(2022, 7, 20),
-                    CreaterId =""
+                    CreaterId = ""
                 },
                 new Event
                 {
