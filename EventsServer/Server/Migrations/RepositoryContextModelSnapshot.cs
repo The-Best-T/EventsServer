@@ -30,6 +30,7 @@ namespace Server.Migrations
                         .HasColumnName("EventId");
 
                     b.Property<string>("CreaterId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Date")
@@ -60,6 +61,7 @@ namespace Server.Migrations
                         new
                         {
                             Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            CreaterId = "",
                             Date = new DateTime(2022, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Wedding of Maxim and Anna",
                             Name = "Wedding",
@@ -69,6 +71,7 @@ namespace Server.Migrations
                         new
                         {
                             Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
+                            CreaterId = "",
                             Date = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Birthday of Elena",
                             Name = "Birthday",
@@ -78,6 +81,7 @@ namespace Server.Migrations
                         new
                         {
                             Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
+                            CreaterId = "",
                             Date = new DateTime(2022, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Minsk olympiad in programming",
                             Name = "Olympiad in programming",
@@ -188,16 +192,17 @@ namespace Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "67c98f35-9463-4f09-89b7-bfa5bcbc5632",
-                            ConcurrencyStamp = "da9767b4-f218-43de-b478-7e1f52194cc6",
+                            Id = "edd2d4d1-25a8-442c-8462-81e4d0241d83",
+                            ConcurrencyStamp = "30e1d4e4-657e-4461-afac-15f91b63653c",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "cf903684-e4e9-478e-a6bb-43217f8732c2",
-                            ConcurrencyStamp = "676ef23e-270a-4d81-b80c-d6bf433bd820",
-                            NormalizedName = "ADMINISTRATOR"
+                            Id = "b75b546c-59a3-4200-8b9b-183830fe1552",
+                            ConcurrencyStamp = "243b3b3c-8fd0-4d1d-b546-142a855c0d12",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         });
                 });
 

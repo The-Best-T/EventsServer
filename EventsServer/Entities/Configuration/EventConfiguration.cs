@@ -16,7 +16,8 @@ namespace Entities.Configuration
                     Description = "Wedding of Maxim and Anna",
                     Speaker = "Holy Father Peter",
                     Place = "North Church",
-                    Date = new DateTime(2022, 7, 20)
+                    Date = new DateTime(2022, 7, 20),
+                    CreaterId =""
                 },
                 new Event
                 {
@@ -25,7 +26,8 @@ namespace Entities.Configuration
                     Description = "Birthday of Elena",
                     Speaker = "Clown Anton",
                     Place = "Hot bar",
-                    Date = new DateTime(2022, 8, 29)
+                    Date = new DateTime(2022, 8, 29),
+                    CreaterId = ""
                 },
                 new Event
                 {
@@ -34,7 +36,8 @@ namespace Entities.Configuration
                     Description = "Minsk olympiad in programming",
                     Speaker = "Genadiy Andreevich",
                     Place = "School 32",
-                    Date = new DateTime(2022, 9, 21)
+                    Date = new DateTime(2022, 9, 21),
+                    CreaterId = ""
                 }
 
                 );

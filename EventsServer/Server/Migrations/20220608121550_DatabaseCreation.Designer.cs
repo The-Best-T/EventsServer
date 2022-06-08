@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220608113222_AddEventConfig")]
-    partial class AddEventConfig
+    [Migration("20220608121550_DatabaseCreation")]
+    partial class DatabaseCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,7 @@ namespace Server.Migrations
                         .HasColumnName("EventId");
 
                     b.Property<string>("CreaterId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Date")
@@ -57,35 +58,6 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Date = new DateTime(2022, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Wedding of Maxim and Anna",
-                            Name = "Wedding",
-                            Place = "North Church",
-                            Speaker = "Holy Father Peter"
-                        },
-                        new
-                        {
-                            Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Date = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Birthday of Elena",
-                            Name = "Birthday",
-                            Place = "Hot bar",
-                            Speaker = "Clown Anton"
-                        },
-                        new
-                        {
-                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
-                            Date = new DateTime(2022, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Minsk olympiad in programming",
-                            Name = "Olympiad in programming",
-                            Place = "School 32",
-                            Speaker = "Genadiy Andreevich"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>

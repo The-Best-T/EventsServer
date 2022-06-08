@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Server.ActionFilters;
+using System.Security.Claims;
 
 namespace Server.Controllers
 {
@@ -115,6 +116,8 @@ namespace Server.Controllers
         {
             var eventEntity = _mapper.Map<Event>(eventForCreationDto);
 
+            eventEntity.CreaterId = User.FindFirst(c => c.Type == "Id").Value;
+
             _repository.Event.CreateEvent(eventEntity);
             await _repository.SaveAsync();
 
@@ -145,9 +148,11 @@ namespace Server.Controllers
             var deletedEvent = HttpContext.Items["checkEvent"] as Event;
 
             string userId = User.FindFirst(c => c.Type == "Id").Value;
-            if (!deletedEvent.CreaterId.Equals(userId))
+            bool isUserAdmin = User.IsInRole("Admin");
+
+            if (!deletedEvent.CreaterId.Equals(userId) && !isUserAdmin)
             {
-                _logger.LogInfo($"User with this id {userId} have no rules to the event with id {deletedEvent.Id}");
+                _logger.LogInfo($"User with this id {userId} has no rules to the event with id {deletedEvent.Id}");
                 return Forbid();
             }
 
@@ -183,6 +188,15 @@ namespace Server.Controllers
             [FromBody] EventForUpdateDto eventForUpdateDto)
         {
             var updateEvent = HttpContext.Items["checkEvent"] as Event;
+
+            string userId = User.FindFirst(c=>c.Type=="Id").Value;
+            bool isUserAdmin = User.IsInRole("Admin");
+
+            if (!updateEvent.CreaterId.Equals(userId) && !isUserAdmin)
+            {
+                _logger.LogInfo($"User with this id {userId} has no rules to the event with id {updateEvent.Id}");
+                return Forbid();
+            }
 
             _mapper.Map(eventForUpdateDto, updateEvent);
             await _repository.SaveAsync();

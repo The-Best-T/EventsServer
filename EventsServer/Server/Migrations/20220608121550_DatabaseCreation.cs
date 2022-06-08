@@ -60,7 +60,7 @@ namespace Server.Migrations
                     Speaker = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreaterId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CreaterId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
