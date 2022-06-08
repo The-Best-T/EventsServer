@@ -17,10 +17,13 @@ namespace Server.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
-        public EventsController(IRepositoryManager repository, IMapper mapper)
+        private readonly ILoggerManager _logger;
+
+        public EventsController(IRepositoryManager repository, IMapper mapper, ILoggerManager logger)
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
         /// <summary>
         /// Return all acces requests for this url
@@ -140,6 +143,13 @@ namespace Server.Controllers
         public async Task<IActionResult> DeleteEventByIdAsync(Guid id)
         {
             var deletedEvent = HttpContext.Items["checkEvent"] as Event;
+
+            string userId = User.FindFirst(c => c.Type == "Id").Value;
+            if (!deletedEvent.CreaterId.Equals(userId))
+            {
+                _logger.LogInfo($"User with this id {userId} have no rules to the event with id {deletedEvent.Id}");
+                return Forbid();
+            }
 
             _repository.Event.DeleteEvent(deletedEvent);
             await _repository.SaveAsync();

@@ -44,7 +44,7 @@ namespace Server.Tests.Controllers
                 .GetAllEventsAsync(eventParameters, false))
                 .Returns(Task.FromResult(pagedList));
 
-            var controller = new EventsController(_repositoryMock.Object, _mapperMock.Object);
+            var controller = new EventsController(_repositoryMock.Object, _mapperMock.Object,null);
             SetContext(controller);
 
             //Act
@@ -68,7 +68,7 @@ namespace Server.Tests.Controllers
                 SearchName = ""
             };
 
-            var controller = new EventsController(null, null);
+            var controller = new EventsController(null, null,null);
 
             //Act
             var result = await controller.GetAllEvents(eventParameters);
@@ -83,7 +83,7 @@ namespace Server.Tests.Controllers
             //Arrange
             _mapperMock = new Mock<IMapper>();
 
-            var controller = new EventsController(null, _mapperMock.Object);
+            var controller = new EventsController(null, _mapperMock.Object,null);
             SetContext(controller);
 
             //Act
@@ -107,7 +107,7 @@ namespace Server.Tests.Controllers
                 mp => mp.Map<EventDto>(It.IsAny<EventForCreationDto>()))
                         .Returns(eventDto);
 
-            var controller = new EventsController(_repositoryMock.Object, _mapperMock.Object);
+            var controller = new EventsController(_repositoryMock.Object, _mapperMock.Object,null);
 
             //Act
             var result = await controller.CreateEventAsync(It.IsAny<EventForCreationDto>());
@@ -124,7 +124,7 @@ namespace Server.Tests.Controllers
             _repositoryMock = new Mock<IRepositoryManager>();
             _repositoryMock.Setup(rp => rp.Event.DeleteEvent(It.IsAny<Event>()));
 
-            var controller = new EventsController(_repositoryMock.Object, null);
+            var controller = new EventsController(_repositoryMock.Object, null,null);
             SetContext(controller);
 
             //Act
@@ -143,7 +143,7 @@ namespace Server.Tests.Controllers
 
             _repositoryMock = new Mock<IRepositoryManager>();
 
-            var controller = new EventsController(_repositoryMock.Object, _mapperMock.Object);
+            var controller = new EventsController(_repositoryMock.Object, _mapperMock.Object,null);
             SetContext(controller);
 
             //Act
