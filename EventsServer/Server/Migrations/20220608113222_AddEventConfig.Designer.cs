@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220531181006_AddedRolesToDb")]
-    partial class AddedRolesToDb
+    [Migration("20220608113222_AddEventConfig")]
+    partial class AddEventConfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("EventId");
+
+                    b.Property<string>("CreaterId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Date")
                         .IsRequired()
@@ -183,22 +186,6 @@ namespace Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "475bc082-b261-4e30-8ccc-562bfa37829d",
-                            ConcurrencyStamp = "34a5f4b8-4ab6-4f49-b280-c4f54eaa402d",
-                            Name = "Client",
-                            NormalizedName = "CLIENT"
-                        },
-                        new
-                        {
-                            Id = "3b2813b9-a985-48b0-9273-35dd4fe6fd78",
-                            ConcurrencyStamp = "cb97e52a-a2e1-4d67-9e58-c5c134bb83ef",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
