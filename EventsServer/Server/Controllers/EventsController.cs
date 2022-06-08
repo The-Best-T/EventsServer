@@ -10,7 +10,6 @@ using Server.ActionFilters;
 
 namespace Server.Controllers
 {
-    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("modsen/events")]
@@ -101,7 +100,7 @@ namespace Server.Controllers
         /// <response code="422">New event not valid</response>
         /// <response code="500">Server error</response>
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -131,7 +130,7 @@ namespace Server.Controllers
         /// <response code="404">Event with this id not found</response>
         /// <response code="500">Server error</response>
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         [ServiceFilter(typeof(ValidateEventExistsAttribute))]
         [ProducesResponseType(204)]
         [ProducesResponseType(401)]
@@ -161,7 +160,7 @@ namespace Server.Controllers
         /// <response code="404">Event with this id not found</response>
         /// <response code="500">Server error</response>
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEventExistsAttribute))]
         [ProducesResponseType(204)]
