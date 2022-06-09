@@ -1,3 +1,5 @@
+Meet up progect for Modsen
+
 Инструкция по запуску:
 Писал на .net 6
 чтобы тестить через swagger нужно запускать через IIS Express
