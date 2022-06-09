@@ -1,6 +1,8 @@
 using AspNetCoreRateLimit;
 using Entities;
+using Entities.Models;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Server.Extensions;
@@ -84,7 +86,10 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = scopedServices.GetRequiredService<RepositoryContext>();
+        var userManager = scopedServices.GetRequiredService<UserManager<User>>();
+
         await db.Database.MigrateAsync();
+        await AdminInitializer.InitializeAsync(userManager);
     }
     catch (Exception ex)
     {
@@ -92,4 +97,5 @@ using (var scope = app.Services.CreateScope())
         logger.LogError($"An error occurred while seeding the database: {ex}.");
     }
 }
+
 app.Run();

@@ -24,6 +24,7 @@ namespace Server.Controllers
             _userManager = userManager;
             _authManager = authManager;
         }
+
         /// <summary>
         /// Register new user
         /// </summary>
@@ -51,9 +52,10 @@ namespace Server.Controllers
                 }
                 return UnprocessableEntity(ModelState);
             }
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            await _userManager.AddToRoleAsync(user, "User");
             return StatusCode(201);
         }
+
         /// <summary>
         /// Get JWT token for authorize
         /// </summary>

@@ -26,5 +26,7 @@ namespace Entities.Models
 
         [Required(ErrorMessage = "Date is a required field.")]
         public DateTime? Date { get; set; }
+        public string CreaterId { get; set; }
+
     }
 }

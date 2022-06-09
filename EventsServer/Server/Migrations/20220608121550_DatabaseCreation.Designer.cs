@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Server.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220531181006_AddedRolesToDb")]
-    partial class AddedRolesToDb
+    [Migration("20220608121550_DatabaseCreation")]
+    partial class DatabaseCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,10 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("EventId");
+
+                    b.Property<string>("CreaterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Date")
                         .IsRequired()
@@ -54,35 +58,6 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Date = new DateTime(2022, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Wedding of Maxim and Anna",
-                            Name = "Wedding",
-                            Place = "North Church",
-                            Speaker = "Holy Father Peter"
-                        },
-                        new
-                        {
-                            Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Date = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Birthday of Elena",
-                            Name = "Birthday",
-                            Place = "Hot bar",
-                            Speaker = "Clown Anton"
-                        },
-                        new
-                        {
-                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
-                            Date = new DateTime(2022, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Minsk olympiad in programming",
-                            Name = "Olympiad in programming",
-                            Place = "School 32",
-                            Speaker = "Genadiy Andreevich"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -183,22 +158,6 @@ namespace Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "475bc082-b261-4e30-8ccc-562bfa37829d",
-                            ConcurrencyStamp = "34a5f4b8-4ab6-4f49-b280-c4f54eaa402d",
-                            Name = "Client",
-                            NormalizedName = "CLIENT"
-                        },
-                        new
-                        {
-                            Id = "3b2813b9-a985-48b0-9273-35dd4fe6fd78",
-                            ConcurrencyStamp = "cb97e52a-a2e1-4d67-9e58-c5c134bb83ef",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

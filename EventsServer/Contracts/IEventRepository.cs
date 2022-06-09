@@ -7,9 +7,11 @@ namespace Contracts
     {
         Task<PagedList<Event>> GetAllEventsAsync(EventParameters eventParameters,
             bool trackChanges = false);
+        Task<PagedList<Event>> GetEventsForUserAsync(EventParameters eventParameters, string userId,
+            bool trackChanges = false);
         Task<Event?> GetEventByIdAsync(Guid id, bool trackChanges = false);
+
         void CreateEvent(Event newEvent);
         void DeleteEvent(Event oldEvent);
-
     }
 }
