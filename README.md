@@ -1,4 +1,3 @@
-# EventsServer test project in Modsen
 Инструкция по запуску:
 Писал на .net 6
 чтобы тестить через swagger нужно запускать через IIS Express
