@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Server.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
@@ -22,7 +23,6 @@ services.ConfigureApi();
 services.ConfigureSwagger();
 services.ConfigureVersioning();
 
-services.AddAuthentication();
 services.ConfigureIdentity();
 services.ConfigureRepositoryManager();
 services.ConfigureJWT(builder.Configuration);
